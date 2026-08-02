@@ -4,24 +4,104 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sairam & Harika's Wedding Invitation</title>
-    <!-- Google Fonts for Elegant Typography -->
-    <link href="https://googleapis.com" rel="stylesheet">
+    
+    <!-- Google Fonts for Traditional Indian Elegance -->
+    <link rel="preconnect" href="[fonts.googleapis.com](https://fonts.googleapis.com)">
+    <link rel="preconnect" href="[fonts.gstatic.com](https://fonts.gstatic.com)" crossorigin>
+    <link href="[fonts.googleapis.com](https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;600&display=swap)" rel="stylesheet">
+
     <style>
+        :root {
+            --bg-color: #fdfbf7;
+            --gold-primary: #c59b27;
+            --gold-dark: #8c6e1d;
+            --gold-light: #e6c875;
+            --text-dark: #3a3226;
+            --text-muted: #6e6455;
+            --border-gold: rgba(197, 155, 39, 0.3);
+        }
+
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
         }
+
         body {
-            font-family: 'Montserrat', sans-serif;
-            background-color: #fcf9f5;
-            color: #4a4a4a;
+            font-family: 'Cormorant Garamond', serif;
+            background-color: var(--bg-color);
+            color: var(--text-dark);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             padding: 20px;
-            overflow: hidden; /* Prevents scrolling while cover is active */
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* FLOATING PETALS CANVAS */
+        #petal-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2000;
+        }
+
+        /* MAIN WRAPPER CARD CONTAINER */
+        .card-container {
+            position: relative;
+            max-width: 480px;
+            width: 100%;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(140, 110, 30, 0.12);
+            border: 1px solid var(--border-gold);
+            overflow: hidden;
+        }
+
+        /* SVG MANDALA OVERLAYS */
+        .mandala {
+            position: absolute;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.85;
+        }
+        .mandala-top-left {
+            top: -20px;
+            left: -20px;
+            width: 140px;
+            height: 140px;
+        }
+        .mandala-top-right {
+            top: -20px;
+            right: -20px;
+            width: 140px;
+            height: 140px;
+            transform: scaleX(-1);
+        }
+        .mandala-bottom-center {
+            bottom: -50px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 220px;
+            height: 220px;
+        }
+
+        /* INNER BORDER FRAME */
+        .frame-border {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            right: 15px;
+            bottom: 15px;
+            border: 1px solid var(--border-gold);
+            border-radius: 8px;
+            pointer-events: none;
+            z-index: 2;
         }
 
         /* SCREEN 1: COVER PAGE OVERLAY */
@@ -31,152 +111,186 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background-color: #fcf9f5;
+            background-color: var(--bg-color);
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
-            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+            transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
             padding: 20px;
         }
         .cover-card {
             background: #ffffff;
-            max-width: 500px;
+            max-width: 480px;
             width: 100%;
             padding: 60px 30px;
             text-align: center;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid #eee1d3;
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(140, 110, 30, 0.12);
+            border: 1px solid var(--border-gold);
             position: relative;
+            overflow: hidden;
         }
-        /* Custom open button */
+
+        .ganesha-icon {
+            width: 65px;
+            height: auto;
+            margin-bottom: 20px;
+            fill: var(--gold-primary);
+        }
+
+        .tagline {
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 15px;
+        }
+
+        .couple-names {
+            font-family: 'Alex Brush', cursive;
+            font-size: 3.8rem;
+            color: var(--gold-primary);
+            margin: 10px 0;
+            line-height: 1.1;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .ampersand {
+            font-size: 2.2rem;
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            font-style: italic;
+            color: var(--gold-dark);
+            margin: -5px 0;
+        }
+
+        /* OPEN BUTTON */
         .open-btn {
             display: inline-block;
-            margin-top: 40px;
-            padding: 15px 35px;
-            background-color: #8c764a;
+            margin-top: 35px;
+            padding: 14px 38px;
+            background: linear-gradient(135deg, #d4af37 0%, #8c6e1d 100%);
             color: #ffffff;
             border: none;
-            border-radius: 25px;
-            font-size: 0.9rem;
+            border-radius: 30px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
             font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(140, 118, 74, 0.2);
+            box-shadow: 0 6px 20px rgba(140, 110, 30, 0.25);
+            position: relative;
+            z-index: 10;
         }
         .open-btn:hover {
-            background-color: #d4af37;
-            transform: scale(1.05);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 8px 25px rgba(140, 110, 30, 0.35);
         }
 
-        /* SCREEN 2: MAIN INVITATION CARD (Hidden until opened) */
+        /* SCREEN 2: MAIN INVITATION CARD */
         .invitation-card {
-            background: #ffffff;
-            max-width: 500px;
-            width: 100%;
-            padding: 40px 30px;
+            padding: 50px 30px 100px 30px;
             text-align: center;
-            border-radius: 15px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            border: 1px solid #eee1d3;
             position: relative;
+            z-index: 5;
             opacity: 0;
-            transform: scale(0.9);
-            transition: all 0.6s ease-out;
-            transition-delay: 0.4s;
+            transform: scale(0.95);
+            transition: all 0.7s ease-out;
+            transition-delay: 0.3s;
         }
 
-        /* Elegant floral-style borders for both cards */
-        .cover-card::before, .cover-card::after, .invitation-card::before, .invitation-card::after {
-            content: "";
-            position: absolute;
-            width: 50px;
-            height: 50px;
-            border: 2px solid #d4af37;
-        }
-        .cover-card::before, .invitation-card::before { top: 15px; left: 15px; border-right: none; border-bottom: none; }
-        .cover-card::after, .invitation-card::after { bottom: 15px; right: 15px; border-left: none; border-top: none; }
-
-        .tagline {
-            font-size: 0.8rem;
-            letter-spacing: 4px;
-            text-transform: uppercase;
-            color: #aa956b;
-            margin-bottom: 20px;
-        }
-        .couple-names {
-            font-family: 'Alex Brush', cursive;
-            font-size: 3.5rem;
-            color: #8c764a;
-            margin: 15px 0;
-            line-height: 1.1;
-        }
-        .ampersand {
-            font-size: 2rem;
-            display: block;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 300;
-            color: #aa956b;
-        }
         .request-text {
-            font-size: 0.9rem;
+            font-size: 1rem;
+            letter-spacing: 1.5px;
             line-height: 1.6;
-            margin: 20px 0;
+            margin: 15px 0 25px 0;
+            text-transform: uppercase;
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* DATE DESIGN (Matching reference image) */
+        .date-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 25px 0 15px 0;
+            font-family: 'Cinzel', serif;
+            color: var(--gold-dark);
+        }
+        .date-month, .date-year {
+            font-size: 1rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        .date-day {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--gold-primary);
+            padding: 0 15px;
+            border-left: 1px solid var(--gold-primary);
+            border-right: 1px solid var(--gold-primary);
+            line-height: 1;
+        }
+
+        .time-text {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            letter-spacing: 2px;
+            color: var(--text-muted);
+            margin-bottom: 25px;
+        }
+
+        .venue-icon {
+            font-size: 1.2rem;
+            color: var(--gold-primary);
+            margin-bottom: 5px;
+        }
+
+        .venue-name {
+            font-family: 'Cinzel', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            letter-spacing: 1.5px;
+            color: var(--text-dark);
+            text-transform: uppercase;
+        }
+
+        .address {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            margin-top: 6px;
             font-style: italic;
         }
-        .details-section {
-            margin: 30px 0;
-            border-top: 1px solid #eee1d3;
-            border-bottom: 1px solid #eee1d3;
-            padding: 20px 0;
-        }
-        .date {
-            font-size: 1.2rem;
-            font-weight: 600;
-            letter-spacing: 2px;
-            color: #4a4a4a;
-            text-transform: uppercase;
-        }
-        .time {
-            font-size: 1rem;
-            margin-top: 5px;
-            color: #777;
-        }
-        .venue {
-            margin-top: 15px;
-            font-weight: 600;
-            font-size: 1rem;
-            color: #4a4a4a;
-        }
-        .address {
-            font-size: 0.9rem;
-            color: #777;
-            margin-top: 5px;
-        }
+
         .map-btn {
             display: inline-block;
-            margin-top: 20px;
-            padding: 12px 25px;
-            background-color: #8c764a;
-            color: #ffffff;
+            margin-top: 25px;
+            padding: 10px 24px;
+            background-color: transparent;
+            color: var(--gold-dark);
+            border: 1px solid var(--gold-primary);
             text-decoration: none;
             border-radius: 25px;
-            font-size: 0.85rem;
+            font-family: 'Cinzel', serif;
+            font-size: 0.75rem;
             font-weight: 600;
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(140, 118, 74, 0.2);
         }
         .map-btn:hover {
-            background-color: #d4af37;
+            background-color: var(--gold-primary);
+            color: #ffffff;
             transform: translateY(-2px);
         }
 
-        /* ANIMATION CLASSES TRIGGERED BY BUTTON */
+        /* ANIMATIONS TRIGGERED BY BUTTON */
         .slide-up-hide {
             transform: translateY(-100%);
             opacity: 0;
@@ -190,9 +304,41 @@
 </head>
 <body>
 
-    <!-- FIRST PAGE: THE COVER (Only shows names and Open button) -->
+    <!-- ANIMATED FLOATING FLOWER PETALS CANVAS -->
+    <canvas id="petal-canvas"></canvas>
+
+    <!-- MANDALA SVG DEFINITION (REUSED) -->
+    <svg style="display: none;">
+        <symbol id="mandala-corner" viewBox="0 0 100 100">
+            <path fill="#c59b27" d="M0,0 L100,0 C100,25 90,50 70,70 C50,90 25,100 0,100 Z" opacity="0.08"/>
+            <path fill="none" stroke="#c59b27" stroke-width="1.5" d="M0,20 C30,20 50,30 60,60 C70,50 80,30 80,0"/>
+            <path fill="none" stroke="#c59b27" stroke-width="1" d="M0,40 C25,40 40,55 45,85 M0,60 C20,60 30,70 35,95"/>
+            <circle cx="0" cy="0" r="85" fill="none" stroke="#c59b27" stroke-dasharray="2,4" stroke-width="1"/>
+            <circle cx="0" cy="0" r="65" fill="none" stroke="#c59b27" stroke-width="0.8"/>
+            <path fill="#c59b27" d="M50,12 C53,6 57,6 60,12 C57,18 53,18 50,12 Z M12,50 C6,53 6,57 12,60 C18,57 18,53 12,50 Z"/>
+            <path fill="#c59b27" d="M35,35 Q45,25 55,35 Q45,45 35,35 Z"/>
+        </symbol>
+        <symbol id="mandala-bottom" viewBox="0 0 200 100">
+            <path fill="none" stroke="#c59b27" stroke-width="1.2" d="M20,100 C20,55 55,20 100,20 C145,20 180,55 180,100"/>
+            <path fill="none" stroke="#c59b27" stroke-width="0.8" stroke-dasharray="3,3" d="M35,100 C35,64 64,35 100,35 C136,35 165,64 165,100"/>
+            <circle cx="100" cy="100" r="50" fill="none" stroke="#c59b27" stroke-width="1"/>
+            <path fill="#c59b27" d="M100,40 C95,25 105,25 100,40 Z M70,50 C60,40 70,30 70,50 Z M130,50 C140,40 130,30 130,50 Z"/>
+        </symbol>
+    </svg>
+
+    <!-- COVER / INDEX SCREEN -->
     <div id="cover-page">
         <div class="cover-card">
+            <!-- Decorative Mandalas -->
+            <svg class="mandala mandala-top-left"><use href="#mandala-corner"/></svg>
+            <svg class="mandala mandala-top-right"><use href="#mandala-corner"/></svg>
+            <div class="frame-border"></div>
+
+            <!-- Lord Ganesha Symbol -->
+            <svg class="ganesha-icon" viewBox="0 0 100 100">
+                <path d="M50,15 C53,15 56,17 56,20 C56,23 53,25 50,25 C47,25 44,23 44,20 C44,17 47,15 50,15 Z M62,28 C68,25 75,30 72,38 C70,43 64,45 60,42 C58,48 55,54 52,60 C58,60 65,58 68,64 C70,68 66,74 60,74 C52,74 48,68 46,62 C42,66 36,70 28,68 C22,66 20,60 24,56 C28,52 34,54 38,58 C42,54 45,48 46,42 C42,44 36,42 34,36 C32,30 38,26 44,28 C48,22 55,22 62,28 Z M50,32 C46,32 44,36 44,40 C48,42 52,42 56,40 C56,36 54,32 50,32 Z"/>
+            </svg>
+
             <p class="tagline">The Wedding Celebration Of</p>
             <h1 class="couple-names">Sairam <span class="ampersand">&</span> Harika</h1>
             
@@ -200,36 +346,131 @@
         </div>
     </div>
 
-    <!-- SECOND PAGE: THE MAIN INVITATION (Hidden details until clicked) -->
-    <div class="invitation-card" id="main-card">
-        <p class="tagline">Save The Date</p>
-        <h1 class="couple-names">Sairam <span class="ampersand">&</span> Harika</h1>
-        
-        <p class="request-text">
-            Together with their families, they joyfully invite you to celebrate their union.
-        </p>
-        
-        <div class="details-section">
-            <!-- PLACEHOLDER DETAILS - CHANGE AS NEEDED -->
-            <p class="date">On Thursday August 27, 2026</p>
-            <p class="time">At 07:00 PM</p>
-            
-            <p class="venue">Kshatriya Kalyana Mandapam</p>
-            <p class="address">College Road,Konkapalli, Amalapuram</p>
-        </div>
+    <!-- MAIN INVITATION CARD -->
+    <div class="card-container">
+        <!-- Mandalas -->
+        <svg class="mandala mandala-top-left"><use href="#mandala-corner"/></svg>
+        <svg class="mandala mandala-top-right"><use href="#mandala-corner"/></svg>
+        <svg class="mandala mandala-bottom-center"><use href="#mandala-bottom"/></svg>
+        <div class="frame-border"></div>
 
-        <!-- Replace ://google.com with your venue link -->
-        <a href="https://www.google.co.in/maps/place/Kshatriya+Kalyana+Mandapam/@16.5607114,81.9912561,17z/data=!3m1!4b1!4m6!3m5!1s0x3a37e583a8300001:0xa14bf2c729820592!8m2!3d16.5607114!4d81.993831!16s%2Fg%2F11sskr8sqc?entry=ttu&g_ep=EgoyMDI2MDcyOS4wIKXMDSoASAFQAw%3D%3D" class="map-btn">📍 View Location on Map</a>
+        <div class="invitation-card" id="main-card">
+            <!-- Lord Ganesha Symbol -->
+            <svg class="ganesha-icon" viewBox="0 0 100 100">
+                <path d="M50,15 C53,15 56,17 56,20 C56,23 53,25 50,25 C47,25 44,23 44,20 C44,17 47,15 50,15 Z M62,28 C68,25 75,30 72,38 C70,43 64,45 60,42 C58,48 55,54 52,60 C58,60 65,58 68,64 C70,68 66,74 60,74 C52,74 48,68 46,62 C42,66 36,70 28,68 C22,66 20,60 24,56 C28,52 34,54 38,58 C42,54 45,48 46,42 C42,44 36,42 34,36 C32,30 38,26 44,28 C48,22 55,22 62,28 Z M50,32 C46,32 44,36 44,40 C48,42 52,42 56,40 C56,36 54,32 50,32 Z"/>
+            </svg>
+
+            <p class="tagline">Together With Their Families</p>
+            
+            <h1 class="couple-names">Sairam <span class="ampersand">&</span> Harika</h1>
+            
+            <p class="request-text">Invite you to celebrate their wedding on</p>
+            
+            <!-- Elegant Date Section matching template -->
+            <div class="date-container">
+                <span class="date-month">August</span>
+                <span class="date-day">27</span>
+                <span class="date-year">2026</span>
+            </div>
+            
+            <p class="time-text">Thursday • At 07:00 PM</p>
+            
+            <div style="margin-top: 20px;">
+                <div class="venue-icon">📍</div>
+                <p class="venue-name">Kshatriya Kalyana Mandapam</p>
+                <p class="address">College Road, Konkapalli, Amalapuram</p>
+            </div>
+
+            <a href="[google.co.in](https://www.google.co.in/maps/place/Kshatriya+Kalyana+Mandapam/@16.5607114,81.9912561,17z/data=!3m1!4b1!4m6!3m5!1s0x3a37e583a8300001:0xa14bf2c729820592!8m2!3d16.5607114!4d81.993831!16s%2Fg%2F11sskr8sqc?entry=ttu)" target="_blank" class="map-btn">
+                View Location on Map
+            </a>
+        </div>
     </div>
 
-    <!-- JavaScript to handle the smooth page reveal -->
+    <!-- JAVASCRIPT FOR REVEAL & MOVING FLOWER PETALS -->
     <script>
+        // Reveal Transition
         function openInvitation() {
             document.getElementById('cover-page').classList.add('slide-up-hide');
             document.getElementById('main-card').classList.add('show-main-card');
             document.body.style.overflow = 'auto';
         }
-    </script>
 
+        // Animated Floating Flower Petals System
+        const canvas = document.getElementById('petal-canvas');
+        const ctx = canvas.getContext('2d');
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        const petals = [];
+        const petalCount = 30;
+
+        class Petal {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * -canvas.height;
+                this.size = Math.random() * 8 + 8;
+                this.speedY = Math.random() * 1.2 + 0.8;
+                this.speedX = Math.random() * 0.6 - 0.3;
+                this.angle = Math.random() * 360;
+                this.spin = (Math.random() - 0.5) * 1.5;
+                // Soft pink and gold hues for petals
+                const colors = ['#f4c2c2', '#fcd5ce', '#e8aeb7', '#f7d6a3', '#e2b353'];
+                this.color = colors[Math.floor(Math.random() * colors.length)];
+                this.opacity = Math.random() * 0.6 + 0.3;
+            }
+
+            update() {
+                this.y += this.speedY;
+                this.x += Math.sin(this.y * 0.01) + this.speedX;
+                this.angle += this.spin;
+
+                if (this.y > canvas.height + 20) {
+                    this.reset();
+                }
+            }
+
+            draw() {
+                ctx.save();
+                ctx.translate(this.x, this.y);
+                ctx.rotate((this.angle * Math.PI) / 180);
+                ctx.globalAlpha = this.opacity;
+                ctx.fillStyle = this.color;
+
+                // Draw organic petal shape
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.bezierCurveTo(-this.size, -this.size / 2, -this.size, this.size, 0, this.size * 1.5);
+                ctx.bezierCurveTo(this.size, this.size, this.size, -this.size / 2, 0, 0);
+                ctx.fill();
+
+                ctx.restore();
+            }
+        }
+
+        for (let i = 0; i < petalCount; i++) {
+            petals.push(new Petal());
+        }
+
+        function animatePetals() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            petals.forEach(petal => {
+                petal.update();
+                petal.draw();
+            });
+            requestAnimationFrame(animatePetals);
+        }
+
+        animatePetals();
+    </script>
 </body>
 </html>
