@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sairam & Harika's Wedding Invitation</title>
+    <!-- Google Fonts for Elegant Typography -->
+    <link href="https://googleapis.com" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #fcf9f5;
+            color: #4a4a4a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            overflow: hidden; /* Prevents scrolling while cover is active */
+        }
+
+        /* SCREEN 1: COVER PAGE OVERLAY */
+        #cover-page {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fcf9f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+            padding: 20px;
+        }
+        .cover-card {
+            background: #ffffff;
+            max-width: 500px;
+            width: 100%;
+            padding: 60px 30px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #eee1d3;
+            position: relative;
+        }
+        /* Custom open button */
+        .open-btn {
+            display: inline-block;
+            margin-top: 40px;
+            padding: 15px 35px;
+            background-color: #8c764a;
+            color: #ffffff;
+            border: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(140, 118, 74, 0.2);
+        }
+        .open-btn:hover {
+            background-color: #d4af37;
+            transform: scale(1.05);
+        }
+
+        /* SCREEN 2: MAIN INVITATION CARD (Hidden until opened) */
+        .invitation-card {
+            background: #ffffff;
+            max-width: 500px;
+            width: 100%;
+            padding: 40px 30px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #eee1d3;
+            position: relative;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.6s ease-out;
+            transition-delay: 0.4s;
+        }
+
+        /* Elegant floral-style borders for both cards */
+        .cover-card::before, .cover-card::after, .invitation-card::before, .invitation-card::after {
+            content: "";
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border: 2px solid #d4af37;
+        }
+        .cover-card::before, .invitation-card::before { top: 15px; left: 15px; border-right: none; border-bottom: none; }
+        .cover-card::after, .invitation-card::after { bottom: 15px; right: 15px; border-left: none; border-top: none; }
+
+        .tagline {
+            font-size: 0.8rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #aa956b;
+            margin-bottom: 20px;
+        }
+        .couple-names {
+            font-family: 'Alex Brush', cursive;
+            font-size: 3.5rem;
+            color: #8c764a;
+            margin: 15px 0;
+            line-height: 1.1;
+        }
+        .ampersand {
+            font-size: 2rem;
+            display: block;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 300;
+            color: #aa956b;
+        }
+        .request-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin: 20px 0;
+            font-style: italic;
+        }
+        .details-section {
+            margin: 30px 0;
+            border-top: 1px solid #eee1d3;
+            border-bottom: 1px solid #eee1d3;
+            padding: 20px 0;
+        }
+        .date {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #4a4a4a;
+            text-transform: uppercase;
+        }
+        .time {
+            font-size: 1rem;
+            margin-top: 5px;
+            color: #777;
+        }
+        .venue {
+            margin-top: 15px;
+            font-weight: 600;
+            font-size: 1rem;
+            color: #4a4a4a;
+        }
+        .address {
+            font-size: 0.9rem;
+            color: #777;
+            margin-top: 5px;
+        }
+        .map-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 25px;
+            background-color: #8c764a;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(140, 118, 74, 0.2);
+        }
+        .map-btn:hover {
+            background-color: #d4af37;
+            transform: translateY(-2px);
+        }
+
+        /* ANIMATION CLASSES TRIGGERED BY BUTTON */
+        .slide-up-hide {
+            transform: translateY(-100%);
+            opacity: 0;
+            pointer-events: none;
+        }
+        .show-main-card {
+            opacity: 1;
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- FIRST PAGE: THE COVER (Only shows names and Open button) -->
+    <div id="cover-page">
+        <div class="cover-card">
+            <p class="tagline">The Wedding Celebration Of</p>
+            <h1 class="couple-names">Sairam <span class="ampersand">&</span> Harika</h1>
+            
+            <button class="open-btn" onclick="openInvitation()">✉️ Open Invitation</button>
+        </div>
+    </div>
+
+    <!-- SECOND PAGE: THE MAIN INVITATION (Hidden details until clicked) -->
+    <div class="invitation-card" id="main-card">
+        <p class="tagline">Save The Date</p>
+        <h1 class="couple-names">Sairam <span class="ampersand">&</span> Harika</h1>
+        
+        <p class="request-text">
+            Together with their families, they joyfully invite you to celebrate their union.
+        </p>
+        
+        <div class="details-section">
+            <!-- PLACEHOLDER DETAILS - CHANGE AS NEEDED -->
+            <p class="date">On Thursday August 27, 2026</p>
+            <p class="time">At 07:00 PM</p>
+            
+            <p class="venue">Kshatriya Kalyana Mandapam</p>
+            <p class="address">College Road,Konkapalli, Amalapuram</p>
+        </div>
+
+        <!-- Replace ://google.com with your venue link -->
+        <a href="https://www.google.co.in/maps/place/Kshatriya+Kalyana+Mandapam/@16.5607114,81.9912561,17z/data=!3m1!4b1!4m6!3m5!1s0x3a37e583a8300001:0xa14bf2c729820592!8m2!3d16.5607114!4d81.993831!16s%2Fg%2F11sskr8sqc?entry=ttu&g_ep=EgoyMDI2MDcyOS4wIKXMDSoASAFQAw%3D%3D" class="map-btn">📍 View Location on Map</a>
+    </div>
+
+    <!-- JavaScript to handle the smooth page reveal -->
+    <script>
+        function openInvitation() {
+            document.getElementById('cover-page').classList.add('slide-up-hide');
+            document.getElementById('main-card').classList.add('show-main-card');
+            document.body.style.overflow = 'auto';
+        }
+    </script>
+
+</body>
+</html>
